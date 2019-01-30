@@ -1,7 +1,9 @@
 package de.utrl;
 
-import com.google.common.net.UrlEscapers;
+import com.google.common.net.*;
 import org.junit.jupiter.api.*;
+import org.springframework.web.util.UriUtils;
+
 import java.io.UnsupportedEncodingException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,5 +23,14 @@ public class EncodingTests {
     void guavaTestEncoding() {
         String encodedString = UrlEscapers.urlFragmentEscaper().escape("hello world");
         assertEquals("hello%20world", encodedString);
+    }
+
+
+    @Test
+    void useUriUtils() throws UnsupportedEncodingException {
+        String encodedString = UriUtils.encodeFragment("HELLO WORLD", "UTF-8");
+        assertEquals("HELLO%20WORLD", encodedString);
+        String doubleEncoded = UriUtils.encodeFragment(encodedString, "UTF-8");
+        assertEquals("HELLO%2520WORLD", doubleEncoded);
     }
 }
